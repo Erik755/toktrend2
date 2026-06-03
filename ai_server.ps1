@@ -1,6 +1,7 @@
 $ErrorActionPreference = "Stop"
 
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
+$PublicRoot = if (Test-Path -LiteralPath (Join-Path $Root "web/index.html")) { Join-Path $Root "web" } else { $Root }
 $Port = if ($env:TOKTREND_PORT) { [int]$env:TOKTREND_PORT } else { 8789 }
 $Prefix = "http://127.0.0.1:$Port/"
 
@@ -1114,7 +1115,7 @@ while ($listener.IsListening) {
         $relative = [Uri]::UnescapeDataString($path.TrimStart("/"))
         if ([string]::IsNullOrWhiteSpace($relative)) { $relative = "index.html" }
 
-        $rootFull = [System.IO.Path]::GetFullPath($Root).TrimEnd("\")
+        $rootFull = [System.IO.Path]::GetFullPath($PublicRoot).TrimEnd("\")
         $rootGuard = "$rootFull\"
         $file = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($rootFull, $relative))
         if (-not $file.StartsWith($rootGuard, [System.StringComparison]::OrdinalIgnoreCase)) {
