@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#07080d" />
+  <meta name="description" content="TokTrend: panel web para detectar tendencias, crear ideas de videos y preparar publicaciones para TikTok." />
+  <title>TokTrend Web App</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <div class="brand-row">
+        <div class="logo" aria-hidden="true">TT</div>
+        <div>
+          <p class="eyebrow">AI TikTok Automation</p>
+          <h1>TokTrend</h1>
+        </div>
+      </div>
+      <p class="hero-copy">Detecta tendencias, genera campañas de video y organiza una cola de publicación desde el navegador.</p>
+      <div class="hero-actions">
+        <button class="primary" id="scanBtn">Analizar tendencias</button>
+        <button class="secondary" id="demoBtn">Crear video demo</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="panel control-panel">
+        <label for="category">Categoría</label>
+        <select id="category">
+          <option>Tech & Gadgets</option>
+          <option>Lifestyle & Hacks</option>
+          <option>Music</option>
+          <option>Comedy</option>
+          <option>Business</option>
+          <option>Gaming</option>
+        </select>
+
+        <label for="seed">Tema semilla</label>
+        <input id="seed" type="text" placeholder="Ej. IA creando videos sola" />
+
+        <label for="apiKey">Gemini API Key opcional</label>
+        <input id="apiKey" type="password" placeholder="Solo se guarda en este navegador" autocomplete="off" />
+        <small>Esta versión web no publica directo en TikTok. Sirve para idear, simular y preparar contenido.</small>
+      </section>
+
+      <section class="grid">
+        <article class="panel">
+          <div class="section-title">
+            <h2>Tendencias</h2>
+            <span id="trendStatus">Listo</span>
+          </div>
+          <div id="trends" class="cards"></div>
+        </article>
+
+        <article class="panel">
+          <div class="section-title">
+            <h2>Cola de videos</h2>
+            <span id="queueCount">0</span>
+          </div>
+          <div id="queue" class="cards empty">No hay videos todavía.</div>
+        </article>
+      </section>
+
+      <section class="panel terminal-panel">
+        <div class="section-title">
+          <h2>Terminal API</h2>
+          <button class="tiny" id="clearLogs">Limpiar</button>
+        </div>
+        <pre id="logs"></pre>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Navegación principal">
+      <a href="#" data-tab="trends" class="active">Tendencias</a>
+      <a href="#" data-tab="queue">Cola Post</a>
+      <a href="#" data-tab="logs">Terminal</a>
+      <a href="#" data-tab="settings">Ajustes</a>
+    </nav>
+  </div>
+
+  <template id="trendTemplate">
+    <article class="trend-card">
+      <div class="score"></div>
+      <div class="trend-body">
+        <h3></h3>
+        <p></p>
+        <div class="tags"></div>
+        <button class="secondary small">Crear campaña</button>
+      </div>
+    </article>
+  </template>
+
+  <script src="./app.js" type="module"></script>
+</body>
+</html>
