@@ -29,12 +29,12 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: 9.1.0
+          gradle-version: 9.3.1
 
       - name: Generate Gradle wrapper if missing
         run: |
           if [ ! -f ./gradlew ]; then
-            gradle wrapper --gradle-version 9.1.0
+            gradle wrapper --gradle-version 9.3.1
           fi
           chmod +x ./gradlew
 
