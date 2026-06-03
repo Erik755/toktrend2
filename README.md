@@ -1,135 +1,129 @@
 # TokTrend
 
-TokTrend is an AI-assisted TikTok automation project. This repository must be portable: it should run locally, in GitHub Codespaces, in Docker, and on public hosts such as Railway or Render without depending on files from a specific computer.
+TokTrend es un proyecto Android-first para planear videos de TikTok con apoyo de IA, preparar ideas de campañas, organizar una cola de contenido y conectar la app con servicios externos.
 
-## Public pages
+El repositorio actual contiene dos componentes principales:
 
-GitHub Pages static landing page:
+```text
+toktrend/
+├── app/                  # Aplicación Android en Kotlin + Jetpack Compose
+├── web/                  # Landing/demo web estática para GitHub Pages
+├── .github/workflows/    # Build APK y deploy de Pages
+├── .env.example          # Variables locales de ejemplo
+└── README.md
+```
 
+## Punto importante
+
+Este repositorio **no es actualmente un backend Node.js en la raíz**. No debe documentarse como si se ejecutara con `npm start`, Docker o Railway, salvo que después se agregue una carpeta/backend separado.
+
+## Página pública
+
+La página web estática se publica desde `web/` en GitHub Pages:
+
+```text
 https://erik755.github.io/toktrend/
+```
 
-Railway production URL, when the backend is deployed:
+Esa página sirve como demo/landing para idear tendencias y preparar contenido. No sustituye la APK Android y no publica directamente en TikTok.
 
-https://function-bun-production-ea34.up.railway.app
+## Aplicación Android
 
-## Requirements
+La aplicación principal está en:
 
-- Node.js 20 or newer
-- npm
-- Docker, optional
-- TikTok Developer credentials, only for real TikTok OAuth/upload
-- OpenAI API key or another configured AI provider, only for real AI generation
+```text
+app/
+```
 
-## Local setup
+Tecnologías principales:
+
+- Kotlin
+- Jetpack Compose
+- Gradle Kotlin DSL
+- Room para persistencia local
+- Servicio Gemini
+- Servicio TikTok OAuth/API
+
+## Requisitos
+
+- Android Studio
+- JDK 17
+- Android SDK configurado
+- Gradle wrapper o Gradle local
+
+## Ejecutar localmente
 
 ```bash
 git clone https://github.com/Erik755/toktrend.git
 cd toktrend
 cp .env.example .env
-npm install
-npm run check
-npm start
+./gradlew assembleDebug
 ```
 
-Open:
+Si no existe `gradlew`:
+
+```bash
+gradle wrapper --gradle-version 9.3.1
+./gradlew assembleDebug
+```
+
+APK generada:
+
+```text
+app/build/outputs/apk/debug/
+```
+
+## Variables locales
+
+Copia `.env.example` a `.env` y llena los valores reales solo en tu entorno local. No subas `.env` al repositorio.
+
+## GitHub Pages local
+
+```bash
+cd web
+python -m http.server 8789
+```
+
+Abrir:
 
 ```text
 http://127.0.0.1:8789/
-http://127.0.0.1:8789/health
 ```
 
-## Railway setup
+## GitHub Actions
 
-Use these settings in Railway:
+El repositorio debe mantener tres flujos:
+
+- `build-apk.yml`: compila APK debug.
+- `deploy-pages.yml`: despliega `web/` a GitHub Pages.
+- `repo-validation.yml`: valida estructura y evita archivos sensibles.
+
+## Backend futuro
+
+Si TokTrend necesita publicación automática real, refresh de tokens, ejecución programada, o manejo seguro de credenciales, debe agregarse un backend separado, por ejemplo:
 
 ```text
-Build command: npm install
-Start command: npm start
+backend/
+├── src/
+├── package.json
+└── README.md
 ```
 
-Required variables:
+Hasta que ese backend exista, Railway/Render no son el flujo principal de este repositorio.
 
-```env
-NODE_ENV=production
-APP_BASE_URL=https://function-bun-production-ea34.up.railway.app
-FRONTEND_URL=https://function-bun-production-ea34.up.railway.app
-BACKEND_URL=https://function-bun-production-ea34.up.railway.app
-TIKTOK_CLIENT_KEY=
-TIKTOK_CLIENT_SECRET=
-TIKTOK_REDIRECT_URI=https://function-bun-production-ea34.up.railway.app/api/tiktok/callback
-OPENAI_API_KEY=
-SESSION_SECRET=replace_with_a_long_random_value
-DATABASE_URL=
-```
+## Seguridad
 
-Important: Railway assigns `PORT` automatically. The app must listen on `process.env.PORT` and host `0.0.0.0`.
+- No subir `.env`.
+- No subir claves reales.
+- No subir keystores ni contraseñas de firma.
+- Mantener los secretos fuera de GitHub.
+- Tratar `web/` como código público.
 
-## Docker
+## Reportes
 
-```bash
-cp .env.example .env
-docker compose up --build
-```
-
-## TikTok Developers
-
-Register the exact redirect URI used by the deployed app:
+Ver:
 
 ```text
-https://function-bun-production-ea34.up.railway.app/api/tiktok/callback
+CODEX_REPORT.md
+CHANGELOG.md
 ```
-
-For local development:
-
-```text
-http://127.0.0.1:8789/api/tiktok/callback
-```
-
-## Security rules
-
-- Never commit `.env`.
-- Never commit real API keys, tokens, passwords, cookies, or OAuth secrets.
-- Keep secrets in Railway/Render environment variables.
-- `TIKTOK_CLIENT_SECRET` must never be exposed to frontend code.
-
-## Healthcheck
-
-The backend exposes:
-
-```text
-GET /health
-```
-
-Expected response:
-
-```json
-{
-  "status": "ok",
-  "app": "TokTrend",
-  "env": "production"
-}
-```
-
-## GitHub setup
-
-Automatic setup, if GitHub CLI is installed:
-
-```bash
-gh auth login
-npm run github:setup
-```
-
-Manual setup:
-
-```bash
-git init
-git add .
-git commit -m "Initial TokTrend portable setup"
-git branch -M master
-git remote add origin https://github.com/Erik755/toktrend.git
-git push -u origin master
-```
-
-## Project status
-
-This repository has been corrected away from the default AI Studio README and toward the TokTrend deployment plan. See `CODEX_REPORT.md` for the technical report.
