@@ -4,6 +4,7 @@
   "private": true,
   "description": "TokTrend - AI-powered TikTok automation app",
   "scripts": {
+    "github:setup": "node scripts/github-setup.js",
     "check:js": "node --check web/app.js",
     "check": "npm run check:js"
   }

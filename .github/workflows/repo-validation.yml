@@ -27,6 +27,8 @@ jobs:
           test -f CODEX_REPORT.md
           test -f .env.example
           test -f .gitignore
+          test -f package.json
+          test -f scripts/github-setup.js
           test -f ai_server.ps1
           test -f web/index.html
           test -f web/app.js
