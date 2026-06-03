@@ -25,7 +25,17 @@ La página web estática se publica desde `web/` en GitHub Pages:
 https://erik755.github.io/toktrend/
 ```
 
-Esa página sirve como demo/landing para idear tendencias y preparar contenido. No sustituye la APK Android y no publica directamente en TikTok.
+Esa página incluye la experiencia web para:
+
+- crear videos automaticos o manuales,
+- generar guion, dialogos, captions, hashtags y escenas,
+- escuchar texto a voz desde el navegador,
+- renderizar y descargar videos `.webm`,
+- analizar comentarios,
+- mostrar la retroalimentacion aprendida,
+- mejorar publicaciones futuras con esas notas.
+
+GitHub Pages no ejecuta backend ni guarda secretos. Cuando la pagina HTTPS esta abierta, intenta usar el backend local en `http://127.0.0.1:8789` si lo tienes corriendo. Si no hay backend o falla la IA remota, mantiene generacion local para que la creacion y descarga de videos no se rompa.
 
 ## Aplicación Android
 
@@ -89,6 +99,16 @@ Abrir:
 ```text
 http://127.0.0.1:8789/
 ```
+
+## Backend local para IA y TikTok
+
+Para generacion remota con OpenAI/Gemini y publicacion directa en TikTok, ejecuta el backend local desde la raiz:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\ai_server.ps1
+```
+
+El backend lee `.env`, atiende `http://127.0.0.1:8789`, mantiene las claves fuera de GitHub y expone las rutas `/api/health`, `/api/ai-video`, `/api/assistant` y `/api/tiktok/*`.
 
 ## GitHub Actions
 

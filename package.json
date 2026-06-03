@@ -1,0 +1,10 @@
+{
+  "name": "toktrend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "TokTrend - AI-powered TikTok automation app",
+  "scripts": {
+    "check:js": "node --check web/app.js",
+    "check": "npm run check:js"
+  }
+}
