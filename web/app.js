@@ -1,5 +1,5 @@
 const storageKey = "toktrend-state-v2";
-const appVersion = "2026.06.04-7";
+const appVersion = "2026.06.04-8";
 
 const trends = [
   {
@@ -793,6 +793,7 @@ function renderStatus() {
   $("#periodStatus").textContent = formatPeriod(state.periodMinutes);
   $("#videoCount").textContent = state.videosCreated;
   $("#periodSelect").value = String(state.periodMinutes);
+  $("#connectTikTokBtn").textContent = state.connected ? "TikTok conectado" : "Conectar con TikTok";
   renderLearningSummary();
   renderAssistantMessages();
 }
