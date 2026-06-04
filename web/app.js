@@ -1,4 +1,5 @@
 const storageKey = "toktrend-state-v2";
+const appVersion = "2026.06.04-2";
 
 const trends = [
   {
@@ -165,7 +166,25 @@ async function checkAiHealth() {
   renderStatus();
 }
 
+async function backendAvailable() {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 2200);
+  try {
+    const response = await fetch(`${apiBase()}/api/health`, { signal: controller.signal });
+    return response.ok;
+  } catch {
+    return false;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function connectTikTok() {
+  showToast("Revisando conexion local con TikTok...", "info");
+  if (!(await backendAvailable())) {
+    showToast("No se encontro el servicio local de TokTrend para conectar TikTok. La creacion y descarga siguen disponibles.", "warning");
+    return;
+  }
   showToast("Abriendo autorizacion de TikTok...", "info");
   location.href = `${apiBase()}/api/tiktok/oauth/start`;
 }
@@ -844,8 +863,18 @@ renderStatus();
 checkAiHealth();
 schedulePublicationCycle();
 
+if ("caches" in window) {
+  const previousVersion = localStorage.getItem("toktrend-app-version");
+  if (previousVersion !== appVersion) {
+    caches.keys()
+      .then((keys) => Promise.all(keys.filter((key) => key.toLowerCase().includes("toktrend")).map((key) => caches.delete(key))))
+      .finally(() => localStorage.setItem("toktrend-app-version", appVersion))
+      .catch(() => {});
+  }
+}
+
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js").catch(() => {});
+    navigator.serviceWorker.register(`./sw.js?v=${appVersion}`).catch(() => {});
   });
 }
