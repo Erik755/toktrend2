@@ -115,9 +115,15 @@ function $(selector) {
 
 function apiBase() {
   if (window.TOKTREND_API_BASE) return String(window.TOKTREND_API_BASE).replace(/\/$/, "");
+  // Solo usar backend local cuando se corre desde archivo o localhost.
+  // En GitHub Pages u otro host remoto no hay backend disponible → null.
   if (location.protocol === "file:") return "http://127.0.0.1:8789";
   if (["127.0.0.1", "localhost", ""].includes(location.hostname)) return "";
-  return "http://127.0.0.1:8789";
+  return null; // modo solo-web: sin backend externo
+}
+
+function hasBackend() {
+  return apiBase() !== null;
 }
 
 function formatPeriod(minutes) {
@@ -138,7 +144,9 @@ function latestLearningText() {
 }
 
 async function postJson(path, body) {
-  const response = await fetch(`${apiBase()}${path}`, {
+  const base = apiBase();
+  if (base === null) throw new Error("Sin backend: generacion local activada.");
+  const response = await fetch(`${base}${path}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body)
@@ -151,6 +159,15 @@ async function postJson(path, body) {
 }
 
 async function checkAiHealth() {
+  if (!hasBackend()) {
+    // Modo solo-web (GitHub Pages): sin backend, generacion completamente local
+    state.aiOnline = false;
+    state.aiProvider = "local";
+    state.connected = false;
+    saveState();
+    renderStatus();
+    return;
+  }
   try {
     const response = await fetch(`${apiBase()}/api/health`);
     const data = await response.json();

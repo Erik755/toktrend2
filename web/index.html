@@ -10,163 +10,252 @@
     <link rel="stylesheet" href="styles.css?v=20260604-2" />
   </head>
   <body>
-    <main class="simple-app">
-      <header class="simple-header">
-        <div class="brand simple-brand">
-          <img src="./assets/toktrend-logo.png" alt="TokTrend" />
-          <div>
-            <span>TOKTREND</span>
-            <strong>Publicador automatico</strong>
+
+    <!-- ── Top Nav ─────────────────────────────────────────────── -->
+    <nav class="topnav">
+      <div class="brand">
+        <div class="logo-mark">TT</div>
+        <span>TokTrend</span>
+      </div>
+      <div class="nav-pills">
+        <a href="#trends-section" class="nav-pill active" data-section="trends">Tendencias</a>
+        <a href="#studio-section" class="nav-pill" data-section="studio">Studio</a>
+        <a href="#queue-section" class="nav-pill" data-section="queue">Cola <span class="badge" id="queueBadge">0</span></a>
+        <a href="#assistant-section" class="nav-pill" data-section="assistant">Asistente</a>
+      </div>
+      <button class="connect-btn" id="connectBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        Conectar TikTok
+      </button>
+    </nav>
+
+    <div class="shell">
+
+      <!-- ── Hero ──────────────────────────────────────────────── -->
+      <header class="hero">
+        <div class="hero-content">
+          <p class="eyebrow">✦ Automatización con IA</p>
+          <h1>Crea contenido<br /><span class="gradient-text">viral para TikTok</span></h1>
+          <p class="hero-sub">Detecta tendencias en tiempo real, genera guiones, voz y videos automaticamente. Sin esfuerzo.</p>
+          <div class="hero-actions">
+            <button class="btn-primary" id="scanBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              Analizar tendencias
+            </button>
+            <button class="btn-ghost" id="demoBtn">Demo rápido</button>
           </div>
         </div>
-        <button class="primary-action" id="connectTikTokBtn">Conectar con TikTok</button>
-      </header>
-
-      <section class="simple-panel">
-        <div>
-          <p class="eyebrow">Automatizacion</p>
-          <h1>Genera videos desde trends y aprende de comentarios</h1>
-          <p class="simple-copy">
-            La app prepara videos con texto y voz explicando que es una inteligencia artificial que aprende de los comentarios.
-          </p>
-        </div>
-
-        <div class="simple-controls">
-          <label>
-            Cada cuanto quieres publicar tu video
-            <select id="periodSelect">
-              <option value="15">15 minutos</option>
-              <option value="30">30 minutos</option>
-              <option value="60">1 hora</option>
-              <option value="120">2 horas</option>
-              <option value="360">6 horas</option>
-            </select>
-          </label>
-          <button id="savePeriodBtn">Guardar periodo</button>
-          <button class="primary-action" id="autoVideoBtn">Crear video de trend ahora</button>
-        </div>
-      </section>
-
-      <section class="simple-panel">
-        <div>
-          <p class="eyebrow">Manual</p>
-          <h2>Crea tu video manualmente</h2>
-          <p class="simple-copy">Escribe un tema. TokTrend crea el texto, la voz, los visuales cinematograficos, los hashtags y el archivo final.</p>
-        </div>
-        <div class="simple-controls">
-          <label>
-            Tema
-            <input id="manualTopicInput" type="text" placeholder="Ej. fitness, cocina, ventas, mi negocio..." />
-          </label>
-          <button class="primary-action" id="manualVideoBtn">Crear video manual</button>
-        </div>
-      </section>
-
-      <section class="simple-panel">
-        <div class="status-row">
-          <div>
-            <span class="metric" id="connectionStatus">Local</span>
-            <small>conexion</small>
-          </div>
-          <div>
-            <span class="metric" id="aiStatus">Local</span>
-            <small>ia</small>
-          </div>
-          <div>
-            <span class="metric" id="periodStatus">1 hora</span>
-            <small>periodo</small>
-          </div>
-          <div>
-            <span class="metric" id="videoCount">0</span>
-            <small>videos creados</small>
-          </div>
-        </div>
-      </section>
-
-      <section class="simple-panel hidden" id="resultPanel">
-        <div>
-          <p class="eyebrow">Video listo</p>
-          <h2 id="videoTitle">Titulo automatico</h2>
-          <p class="simple-copy" id="videoCaption"></p>
-          <p class="simple-copy" id="videoHashtags"></p>
-          <p class="reference-copy" id="videoReference"></p>
-        </div>
-        <div class="video-preview simple-preview">
-          <div class="phone-frame">
-            <div class="phone-scene" id="phoneScene">
-              <video id="manualEditorPreview" class="manual-editor-preview hidden" muted loop playsinline></video>
-              <span id="sceneOverlay">TokTrend</span>
+        <div class="hero-visual">
+          <div class="phone-mockup">
+            <div class="phone-inner">
+              <div class="tiktok-ui" id="heroPhone">
+                <div class="tiktok-video-bg"></div>
+                <div class="tiktok-overlay">
+                  <div class="tiktok-user">
+                    <div class="tiktok-avatar">AI</div>
+                    <span>@toktrend_bot</span>
+                  </div>
+                  <div class="tiktok-caption" id="heroCaption">Genera tu primer video de tendencia ⚡</div>
+                  <div class="tiktok-actions">
+                    <div class="tiktok-action">❤️<small id="heroLikes">47.2K</small></div>
+                    <div class="tiktok-action">💬<small>892</small></div>
+                    <div class="tiktok-action">↗️<small>3.1K</small></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="simple-controls">
-          <button id="previewVoiceBtn">Escuchar voz</button>
-          <button id="refreshAiBtn">Mejorar con IA</button>
-          <button class="primary-action" id="downloadVideoBtn">Crear y descargar video</button>
-          <button class="primary-action" id="publishTikTokBtn">Publicar en TikTok</button>
-          <a class="download-link hidden" id="lastVideoLink" download="toktrend-video.webm">Descargar ultimo video</a>
-        </div>
-      </section>
+      </header>
 
-      <section class="simple-panel hidden" id="dialogPanel">
-        <div>
-          <p class="eyebrow">Dialogos</p>
-          <h2>Guion y voz por escena</h2>
+      <!-- ── Stats Row ─────────────────────────────────────────── -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="stat-val" id="statTrends">0</span>
+          <span class="stat-label">Tendencias detectadas</span>
         </div>
-        <div class="dialog-list" id="dialogList"></div>
-      </section>
-
-      <section class="simple-panel" id="commentsPanel">
-        <div>
-          <p class="eyebrow">Comentarios</p>
-          <h2>Analizar y aprender de comentarios</h2>
-          <p class="simple-copy">
-            Introduce aqui los comentarios recibidos, uno por linea, para que TokTrend
-            aprenda y mejore el proximo video.
-          </p>
+        <div class="stat-card">
+          <span class="stat-val" id="statQueue">0</span>
+          <span class="stat-label">Videos en cola</span>
         </div>
+        <div class="stat-card">
+          <span class="stat-val" id="statReady">0</span>
+          <span class="stat-label">Listos para publicar</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-val status-dot">●</span>
+          <span class="stat-label" id="aiStatusLabel">IA disponible</span>
+        </div>
+      </div>
 
-        <div class="comment-controls">
-          <label>
-            Comentarios
-            <textarea id="commentsInput" rows="4" placeholder="Escribe aqui los comentarios..."></textarea>
+      <!-- ── Controls ──────────────────────────────────────────── -->
+      <section class="panel control-bar" id="trends-section">
+        <div class="control-grid">
+          <label class="field">
+            <span>Categoría</span>
+            <select id="category">
+              <option>Tech &amp; Gadgets</option>
+              <option>Lifestyle &amp; Hacks</option>
+              <option>Music</option>
+              <option>Comedy</option>
+              <option>Business</option>
+              <option>Gaming</option>
+            </select>
           </label>
-
-          <button class="primary-action" id="analyzeCommentsBtn">Analizar comentarios</button>
+          <label class="field">
+            <span>Tu tema / nicho</span>
+            <input id="seed" type="text" placeholder="Ej. fitness, cocina, negocios…" />
+          </label>
+          <label class="field">
+            <span>API Key OpenAI (opcional)</span>
+            <input id="apiKey" type="password" placeholder="sk-…" autocomplete="off" />
+          </label>
+          <div class="field field-actions">
+            <button class="btn-primary" id="scanBtnBar">Analizar</button>
+            <button class="btn-ghost" id="demoBtnBar">Demo</button>
+          </div>
         </div>
+        <p class="hint" id="statusHint">Pulsa "Analizar tendencias" para comenzar.</p>
+      </section>
 
-        <div class="learning-summary" id="learningSummary">
-          Sin comentarios analizados todavia.
+      <!-- ── Trends Grid ───────────────────────────────────────── -->
+      <section class="section-block">
+        <div class="section-header">
+          <h2>Tendencias detectadas <span class="muted" id="trendCount"></span></h2>
+        </div>
+        <div class="trends-grid" id="trendsGrid">
+          <p class="empty-msg">Pulsa "Analizar tendencias" para ver resultados.</p>
         </div>
       </section>
 
-      <section class="simple-panel assistant-panel" id="assistantPanel">
-        <div>
-          <p class="eyebrow">Asistente</p>
-          <h2>Asistente de TokTrend</h2>
-          <p class="simple-copy">
-            Preguntale por ideas, hooks, captions, hashtags, ajustes de video o como mejorar con los comentarios.
-          </p>
+      <template id="trendTemplate">
+        <article class="trend-card">
+          <div class="trend-score-wrap">
+            <div class="score-ring"><span class="score"></span></div>
+          </div>
+          <div class="trend-body">
+            <h3></h3>
+            <p></p>
+            <div class="tags"></div>
+          </div>
+          <button class="btn-add-queue">+ Añadir a cola</button>
+        </article>
+      </template>
+
+      <!-- ── Studio ────────────────────────────────────────────── -->
+      <section class="panel studio-panel" id="studio-section">
+        <div class="studio-header">
+          <p class="eyebrow">✦ Studio</p>
+          <h2>Crea video manualmente</h2>
+          <p class="muted-copy">Escribe un tema y TokTrend genera guion, voz, visuales y hashtags.</p>
+        </div>
+        <div class="studio-controls">
+          <label class="field" style="flex:1">
+            <span>Tema del video</span>
+            <input id="manualTopicInput" type="text" placeholder="Ej. fitness en casa, receta rapida, tips de ventas…" />
+          </label>
+          <button class="btn-primary" id="generateBtn">Generar video</button>
         </div>
 
-        <div class="assistant-chat" id="assistantMessages" aria-live="polite"></div>
+        <div class="studio-result hidden" id="studioResult">
+          <div class="result-preview">
+            <div class="phone-mockup-sm">
+              <div class="phone-inner-sm">
+                <div class="tiktok-ui-sm">
+                  <div class="tiktok-video-bg"></div>
+                  <div class="tiktok-overlay-sm">
+                    <div class="result-caption" id="resultCaption">—</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="result-info">
+            <div class="result-block">
+              <p class="eyebrow">Guion generado</p>
+              <p class="result-script" id="resultScript">—</p>
+            </div>
+            <div class="result-block">
+              <p class="eyebrow">Hashtags</p>
+              <div class="tags" id="resultTags"></div>
+            </div>
+            <div class="result-block">
+              <p class="eyebrow">Escenas sugeridas</p>
+              <ol class="scene-list" id="resultScenes"></ol>
+            </div>
+            <div class="result-actions">
+              <button class="btn-ghost" id="previewVoiceBtn">▶ Escuchar voz</button>
+              <button class="btn-ghost" id="refineBtn">✨ Mejorar con IA</button>
+              <button class="btn-primary" id="addToQueueBtn">+ Añadir a cola</button>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <form class="assistant-form" id="assistantForm">
-          <label>
-            Mensaje
-            <textarea id="assistantInput" rows="2" placeholder="Ej. Dame 3 hooks para el video actual..."></textarea>
+      <!-- ── Queue ─────────────────────────────────────────────── -->
+      <section class="section-block" id="queue-section">
+        <div class="section-header">
+          <h2>Cola de publicación <span class="badge-lg" id="queueCountLabel">0</span></h2>
+          <button class="btn-ghost btn-sm" id="clearQueueBtn">Limpiar cola</button>
+        </div>
+        <div class="queue-grid" id="queueGrid">
+          <p class="empty-msg">La cola está vacía. Añade tendencias o crea un video manual.</p>
+        </div>
+      </section>
+
+      <!-- ── Comments ──────────────────────────────────────────── -->
+      <section class="panel comments-panel">
+        <p class="eyebrow">✦ Aprendizaje</p>
+        <h2>Aprende de comentarios</h2>
+        <p class="muted-copy">Pega los comentarios recibidos para mejorar el contenido futuro.</p>
+        <div class="comments-controls">
+          <label class="field" style="flex:1">
+            <span>Comentarios (uno por línea)</span>
+            <textarea id="commentsInput" rows="4" placeholder="Me encantó el video&#10;Podrías explicar más…&#10;¿Cuándo el siguiente?"></textarea>
           </label>
-          <button class="primary-action" id="assistantSendBtn" type="submit">Enviar</button>
+          <button class="btn-primary" id="analyzeBtn">Analizar</button>
+        </div>
+        <div class="learning-output hidden" id="learningOutput">
+          <p class="eyebrow">Resumen de aprendizaje</p>
+          <p id="learningText">—</p>
+        </div>
+      </section>
+
+      <!-- ── Assistant ─────────────────────────────────────────── -->
+      <section class="panel assistant-panel" id="assistant-section">
+        <p class="eyebrow">✦ Asistente IA</p>
+        <h2>Asistente de TokTrend</h2>
+        <p class="muted-copy">Pregúntale por hooks, captions, hashtags, ideas o estrategias.</p>
+        <div class="chat-window" id="chatWindow">
+          <div class="chat-msg bot-msg">
+            <span class="chat-avatar">🤖</span>
+            <div class="chat-bubble">¡Hola! Soy tu asistente de TokTrend. Puedo ayudarte a crear hooks, mejorar captions, sugerir hashtags y más. ¿Qué necesitas?</div>
+          </div>
+        </div>
+        <form class="chat-form" id="chatForm">
+          <input type="text" id="chatInput" placeholder="Ej. Dame 5 hooks para fitness…" autocomplete="off" />
+          <button class="btn-primary" type="submit" id="chatSendBtn">Enviar</button>
         </form>
       </section>
-    </main>
 
-    <div class="publish-overlay hidden" id="renderOverlay">
-      <div class="publish-card">
+      <!-- ── Logs ──────────────────────────────────────────────── -->
+      <section class="panel logs-panel">
+        <div class="section-header">
+          <p class="eyebrow" style="margin:0">✦ Actividad</p>
+          <button class="btn-ghost btn-sm" id="clearLogsBtn">Limpiar</button>
+        </div>
+        <pre class="log-output" id="logs"></pre>
+      </section>
+
+    </div>
+
+    <!-- ── Render overlay ────────────────────────────────────── -->
+    <div class="overlay hidden" id="renderOverlay">
+      <div class="overlay-card">
         <div class="spinner"></div>
-        <h2>Creando video</h2>
-        <p id="renderMessage">Preparando archivo...</p>
-        <div class="progress-track"><div id="renderProgress"></div></div>
+        <h3>Generando video…</h3>
+        <p id="renderMessage">Preparando guion con IA…</p>
+        <div class="progress-bar"><div id="renderProgress" style="width:0%"></div></div>
       </div>
     </div>
 
