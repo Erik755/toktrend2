@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#08090d" />
+    <meta name="description" content="TokTrend crea videos verticales para TikTok con guion, voz, visuales, comentarios y mejora continua." />
+    <title>TokTrend</title>
+    <link rel="manifest" href="./manifest.webmanifest?v=20260604-10" />
+    <link rel="stylesheet" href="styles.css?v=20260604-10" />
+  </head>
+  <body>
+    <main class="simple-app">
+      <header class="simple-header">
+        <div class="brand simple-brand">
+          <img src="./assets/toktrend-logo.png" alt="TokTrend" />
+          <div>
+            <span>TOKTREND</span>
+            <strong>Publicador automatico</strong>
+          </div>
+        </div>
+        <button class="primary-action" id="connectTikTokBtn">Conectar con TikTok</button>
+      </header>
+
+      <section class="simple-panel">
+        <div>
+          <p class="eyebrow">Automatizacion</p>
+          <h1>Genera videos desde trends y aprende de comentarios</h1>
+          <p class="simple-copy">
+            La app prepara videos con texto y voz explicando que es una inteligencia artificial que aprende de los comentarios.
+          </p>
+        </div>
+
+        <div class="simple-controls">
+          <label>
+            Cada cuanto quieres publicar tu video
+            <select id="periodSelect">
+              <option value="15">15 minutos</option>
+              <option value="30">30 minutos</option>
+              <option value="60">1 hora</option>
+              <option value="120">2 horas</option>
+              <option value="360">6 horas</option>
+            </select>
+          </label>
+          <button id="savePeriodBtn">Guardar periodo</button>
+          <button class="primary-action" id="autoVideoBtn">Crear video de trend ahora</button>
+        </div>
+      </section>
+
+      <section class="simple-panel">
+        <div>
+          <p class="eyebrow">Manual</p>
+          <h2>Crea tu video manualmente</h2>
+          <p class="simple-copy">Escribe un tema. TokTrend crea el texto, la voz, los visuales cinematograficos, los hashtags y el archivo final.</p>
+        </div>
+        <div class="simple-controls">
+          <label>
+            Tema
+            <input id="manualTopicInput" type="text" placeholder="Ej. fitness, cocina, ventas, mi negocio..." />
+          </label>
+          <button class="primary-action" id="manualVideoBtn">Crear video manual</button>
+        </div>
+      </section>
+
+      <section class="simple-panel">
+        <div class="status-row">
+          <div>
+            <span class="metric" id="connectionStatus">Local</span>
+            <small>conexion</small>
+          </div>
+          <div>
+            <span class="metric" id="aiStatus">Local</span>
+            <small>ia</small>
+          </div>
+          <div>
+            <span class="metric" id="periodStatus">1 hora</span>
+            <small>periodo</small>
+          </div>
+          <div>
+            <span class="metric" id="videoCount">0</span>
+            <small>videos creados</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="simple-panel hidden" id="resultPanel">
+        <div>
+          <p class="eyebrow">Video listo</p>
+          <h2 id="videoTitle">Titulo automatico</h2>
+          <p class="simple-copy" id="videoCaption"></p>
+          <p class="simple-copy" id="videoHashtags"></p>
+          <p class="reference-copy" id="videoReference"></p>
+        </div>
+        <div class="video-preview simple-preview">
+          <div class="phone-frame">
+            <div class="phone-scene" id="phoneScene">
+              <video id="manualEditorPreview" class="manual-editor-preview hidden" muted loop playsinline></video>
+              <span id="sceneOverlay">TokTrend</span>
+            </div>
+          </div>
+        </div>
+        <div class="simple-controls">
+          <button id="previewVoiceBtn">Escuchar voz</button>
+          <button id="refreshAiBtn">Mejorar con IA</button>
+          <button class="primary-action" id="downloadVideoBtn">Crear y descargar video</button>
+          <button class="primary-action" id="publishTikTokBtn">Publicar en TikTok</button>
+          <a class="download-link hidden" id="lastVideoLink" download="toktrend-video.webm">Descargar ultimo video</a>
+        </div>
+      </section>
+
+      <section class="simple-panel hidden" id="dialogPanel">
+        <div>
+          <p class="eyebrow">Dialogos</p>
+          <h2>Guion y voz por escena</h2>
+        </div>
+        <div class="dialog-list" id="dialogList"></div>
+      </section>
+
+      <section class="simple-panel" id="commentsPanel">
+        <div>
+          <p class="eyebrow">Comentarios</p>
+          <h2>Analizar y aprender de comentarios</h2>
+          <p class="simple-copy">
+            Introduce aqui los comentarios recibidos, uno por linea, para que TokTrend
+            aprenda y mejore el proximo video.
+          </p>
+        </div>
+
+        <div class="comment-controls">
+          <label>
+            Comentarios
+            <textarea id="commentsInput" rows="4" placeholder="Escribe aqui los comentarios..."></textarea>
+          </label>
+
+          <button class="primary-action" id="analyzeCommentsBtn">Analizar comentarios</button>
+        </div>
+
+        <div class="learning-summary" id="learningSummary">
+          Sin comentarios analizados todavia.
+        </div>
+      </section>
+
+      <section class="simple-panel assistant-panel" id="assistantPanel">
+        <div>
+          <p class="eyebrow">Asistente</p>
+          <h2>Asistente de TokTrend</h2>
+          <p class="simple-copy">
+            Preguntale por ideas, hooks, captions, hashtags, ajustes de video o como mejorar con los comentarios.
+          </p>
+        </div>
+
+        <div class="assistant-chat" id="assistantMessages" aria-live="polite"></div>
+
+        <form class="assistant-form" id="assistantForm">
+          <label>
+            Mensaje
+            <textarea id="assistantInput" rows="2" placeholder="Ej. Dame 3 hooks para el video actual..."></textarea>
+          </label>
+          <button class="primary-action" id="assistantSendBtn" type="submit">Enviar</button>
+        </form>
+      </section>
+    </main>
+
+    <div class="publish-overlay hidden" id="renderOverlay">
+      <div class="publish-card">
+        <div class="spinner"></div>
+        <h2>Creando video</h2>
+        <p id="renderMessage">Preparando archivo...</p>
+        <div class="progress-track"><div id="renderProgress"></div></div>
+      </div>
+    </div>
+
+    <script src="app.js?v=20260604-10"></script>
+  </body>
+</html>

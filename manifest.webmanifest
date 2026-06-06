@@ -1,0 +1,20 @@
+{
+  "name": "TokTrend",
+  "short_name": "TokTrend",
+  "description": "Dashboard PWA para detectar tendencias, crear ideas de videos y organizar publicaciones para TikTok.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#07080d",
+  "theme_color": "#07080d",
+  "categories": ["productivity", "social", "entertainment"],
+  "icons": [
+    {
+      "src": "./assets/toktrend-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
