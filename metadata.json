@@ -1,6 +1,6 @@
 {
   "name": "TokTrend",
-  "description": "Analiza tendencias de TikTok, planifica ideas virales y genera guiones de escenas de video con IA, y gestiona publicaciones programadas de forma automática y eficiente.",
+  "description": "Plataforma de automatización y agentes de IA para la creación de contenido en TikTok basada en tendencias reales y generación de video inteligente.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
